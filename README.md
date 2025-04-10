@@ -1,3 +1,6 @@
+# My solutions for Leetcode's SQL 50 study plan challenges
+[You can find all the challenges here](https://leetcode.com/studyplan/top-sql-50/)
+
 **Problem 1 -** [1757. Recyclable and Low Fat Products](https://leetcode.com/problems/recyclable-and-low-fat-products/)
 ```
 SELECT product_id FROM Products
