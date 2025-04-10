@@ -138,3 +138,74 @@ WHERE description != 'boring'
 GROUP BY 1,2,3,4
 ORDER BY rating DESC
 ```
+
+**Problem 16 -** [620. Not Boring Movies](https://leetcode.com/problems/not-boring-movies/)
+```
+SELECT P.product_id,
+        COALESCE(ROUND(SUM((units * price)) / CAST(SUM(units) AS numeric) , 2), 0) AS average_price
+FROM Prices AS P
+LEFT JOIN UnitsSold AS U
+    ON P.product_id = U.product_id
+    AND purchase_date BETWEEN start_date AND end_date
+GROUP BY 1
+```
+
+**Problem 17 -** [1251. Average Selling Price](https://leetcode.com/problems/average-selling-price/)
+```
+SELECT *
+FROM Cinema
+WHERE description != 'boring'
+   AND (id % 2) != 0
+GROUP BY 1,2,3,4
+ORDER BY rating DESC
+```
+
+**Problem 18 -** [1075. Project Employees I](https://leetcode.com/problems/project-employees-i/)
+```
+SELECT P.project_id, ROUND(CAST(SUM(E.experience_years)AS numeric) / COUNT(E.employee_id),2) AS average_years
+FROM Project AS P
+JOIN Employee AS E
+    ON P.employee_id = E.employee_id
+GROUP BY 1
+```
+
+**Problem 19 -** [1633. Percentage of Users Attended a Contest](https://leetcode.com/problems/percentage-of-users-attended-a-contest/)
+```
+SELECT R.contest_id, ROUND(100 * COUNT(DISTINCT R.user_id)
+/
+(SELECT COUNT(U.user_id) FROM Users AS U)::numeric, 2) AS percentage
+FROM Register AS R
+GROUP BY 1
+ORDER BY 2 DESC, 1 ASC
+```
+
+**Problem 20 -** [1211. Queries Quality and Percentage](https://leetcode.com/problems/queries-quality-and-percentage/)
+```
+SELECT query_name,
+    ROUND(SUM(rating::numeric / position) / COUNT(result),2) AS quality ,
+    ROUND((COUNT(rating) FILTER ( WHERE rating < 3 ) * 100.00) / COUNT(rating), 2) AS poor_query_percentage
+FROM Queries AS Q
+GROUP BY 1
+```
+
+**Problem 21 -** [1193. Monthly Transactions I](https://leetcode.com/problems/monthly-transactions-i/)
+```
+SELECT TO_CHAR(trans_date,'YYYY-MM') AS month, country,
+    COUNT(id) AS trans_count,
+    SUM(amount) AS trans_total_amount,
+    COUNT(id) FILTER(WHERE state = 'approved') AS approved_count,
+    COALESCE(SUM(amount) FILTER(WHERE state = 'approved'),0) AS approved_total_amount
+FROM Transactions AS T
+GROUP BY 1,2
+```
+
+**Problem 22 -** [1174. Immediate Food Delivery II](https://leetcode.com/problems/immediate-food-delivery-ii/)
+```
+SELECT ROUND((COUNT(delivery_id) FILTER (WHERE order_date = customer_pref_delivery_date) 
+       / COUNT(delivery_id)::numeric) * 100,2) AS immediate_percentage
+FROM (
+    SELECT DISTINCT ON (customer_id) *
+    FROM Delivery
+    ORDER BY customer_id, order_date
+) AS FirstOrders
+```
